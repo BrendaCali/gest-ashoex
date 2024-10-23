@@ -358,6 +358,151 @@
                 }
             }
         },
+        "/api/grupo": {
+            "get": {
+                "tags": [
+                    "Grupos"
+                ],
+                "summary": "Obtener lista de grupos",
+                "description": "Este endpoint retorna una lista de grupos.",
+                "operationId": "470f68cef0c2e0c921e746cc90766f82",
+                "responses": {
+                    "200": {
+                        "description": "Lista de grupos obtenida con éxito"
+                    }
+                }
+            }
+        },
+        "/api/grupo/{id}": {
+            "get": {
+                "tags": [
+                    "Grupos"
+                ],
+                "summary": "Obtiene los detalles de una grupo por su ID",
+                "operationId": "71ecd5bbf3a284f66ce9def4a875954c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la grupo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "materia_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "nro_grupo": {
+                                                    "type": "number",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "error": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": []
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Operación exitosa"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "El grupo  no existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        },
+                                        "error": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "El grupo no existe"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Operación fallida"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error en el servidor interno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        },
+                                        "error": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "Ocurrió un error inesperado"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Operación fallida"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/health": {
             "get": {
                 "tags": [
@@ -704,6 +849,10 @@
         {
             "name": "Carreras",
             "description": "Carreras"
+        },
+        {
+            "name": "Grupos",
+            "description": "Grupos"
         },
         {
             "name": "Health Check",
