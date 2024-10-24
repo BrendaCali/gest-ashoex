@@ -35,8 +35,10 @@ Route::controller(MateriaController::class)->group(function () {
     
 });
 
-Route::get('/grupo', [GrupoController::class, 'index']);
-Route::post('/grupo', [GrupoController::class, 'store']);
-Route::get('/grupo/{id}', [GrupoController::class, 'show']);
-Route::put('/grupo/{id}', [GrupoController::class, 'update']);
-Route::delete('/grupo/{id}', [GrupoController::class, 'destroy']);
+Route::controller(GrupoController::class)-> group(function(){
+    Route::get('/grupos','index');
+    Route::post('/gruposPost','store');
+    Route::get('/gruposid/{id}','show');
+    Route::put('/gruposUpdate/{id}','update');
+    Route::delete('/gruposDelete','destroy');
+});

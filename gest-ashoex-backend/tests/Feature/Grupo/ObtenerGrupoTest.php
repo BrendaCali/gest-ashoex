@@ -4,42 +4,58 @@ namespace Tests\Feature\Grupo;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\Response;   
+use Illuminate\Http\Response; 
+use App\Models\Materia;
 use App\Models\Grupo;
 use Tests\TestCase;
 
-class ObtenerCarreraTest extends TestCase
+class ObtenerGrupoTest extends TestCase
 {
     use RefreshDatabase;
 
-    
-    public function test_get_returns_successful(): void
-    {
-        $grupo = Grupo::create([
-                'materia_id' => 41,
-                'nro_semestres' => 1
-        ]);
-        $response = $this->get("/api/grupos/{$grupo->id}");
-        $response->assertStatus(Response::HTTP_OK)
-                ->assertJson([
-                    'success' => true,
-                    'error' => [],
-                    'message' => 'Operación exitosa',
-                    'data' => []
-        ]);
-    }
-
-    public function test_get_returns_error(): void
+    public function test_obtener_grupo_exitoso()
 {
-    $response = $this->get("/api/grupos/100");
-    $response->assertStatus(Response::HTTP_NOT_FOUND)
-             ->assertJson([
-                 'success' => false,
-                 'data' => [],  
-                 'error' => [
-                     'el grupo no existe', 
-                 ],
-                 'message' => 'Operación fallida', 
-             ]);
+    $materia= Materia::create([
+        'codigo'=> 20190004, 
+        'nombre'=>'Fisica General', 
+        'tipo'=>'regular', 
+        'nro_PeriodoAcademico'=>2
+     ]);
+     $grupo = Grupo::create([
+        'materia_id' => 1,
+        'nro_grupo' => 1
+    ]);
+
+    // Realiza la solicitud GET
+    $response = $this->get('/api/gruposid/' . $grupo->id);
+
+    // Muestra el contenido de la respuesta para depuración
+    $response->dump(); // o $response->dd();
+
+    // Continúa con las aserciones
+    $response->assertStatus(200);
+    $response->assertJson([
+        'success' => true,
+        'data' => [
+            'id' => $grupo->id,
+            'nro_grupo' => $grupo->nro_grupo,
+        ],
+    ]);
+}
+
+
+public function test_obtener_grupo_error()
+{
+    // Realiza una solicitud GET con un ID inexistente
+    $response = $this->get('/api/gruposid/999'); // Un ID que no exista
+
+    // Verifica que el código de estado HTTP sea 404
+    $response->assertStatus(404);
+
+    // Verifica el JSON devuelto
+    $response->assertJson([
+        'success' => false,
+        'message' => 'Grupo no encontrado',
+    ]);
 }
 }
