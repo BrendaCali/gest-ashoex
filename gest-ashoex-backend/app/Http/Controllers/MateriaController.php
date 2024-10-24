@@ -368,12 +368,7 @@ class MateriaController extends Controller
  */
 public function destroy(string $id)
 {
-    $validatedData = $request->validate([
-        'codigo' => 'integer|nullable',
-        'nombre' => 'string|max:255|nullable',
-        'tipo' => 'string|nullable',
-        'nro_PeriodoAcademico' => 'integer|nullable',
-    ]);
+    
     try {
         // Buscar la materia por su ID
         $materia = Materia::findOrFail($id);
