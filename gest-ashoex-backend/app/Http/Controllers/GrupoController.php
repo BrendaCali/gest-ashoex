@@ -79,7 +79,7 @@ class GrupoController extends Controller
  *             @OA\Property(property="success", type="boolean", example=false),
  *             @OA\Property(property="data", type="array", @OA\Items(), example={}),
  *             @OA\Property(property="error", type="array", 
- *                 @OA\Items(type="string", example="El grupo no existe")),
+ *                 @OA\Items(type="string", example="Grupo no encontrado")),
  *             @OA\Property(property="message", type="string", example="Operación fallida")
  *         )
  *     ),
@@ -104,13 +104,15 @@ public function show($id)
     if (!$grupo) {
         return response()->json([
             'success' => false,
-            'message' => 'Grupo no encontrado',
+            'error' => 'Grupo no encontrado',
+            'message' => 'Operacion fallida',
         ], 404);
     }
 
     return response()->json([
         'success' => true,
         'data' => $grupo,
+        'message' => 'Operacion exitosa'
     ], 200);
 }
 

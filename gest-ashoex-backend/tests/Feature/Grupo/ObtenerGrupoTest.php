@@ -40,6 +40,7 @@ class ObtenerGrupoTest extends TestCase
             'id' => $grupo->id,
             'nro_grupo' => $grupo->nro_grupo,
         ],
+        'message' => 'Operacion exitosa',
     ]);
 }
 
@@ -55,7 +56,8 @@ public function test_obtener_grupo_error()
     // Verifica el JSON devuelto
     $response->assertJson([
         'success' => false,
-        'message' => 'Grupo no encontrado',
+        'error' => 'Grupo no encontrado',
+        'message' => 'Operacion fallida',
     ]);
 }
 }

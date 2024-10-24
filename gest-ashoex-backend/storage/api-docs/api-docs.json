@@ -455,7 +455,7 @@
                                             "type": "array",
                                             "items": {
                                                 "type": "string",
-                                                "example": "El grupo no existe"
+                                                "example": "Grupo no encontrado"
                                             }
                                         },
                                         "message": {
