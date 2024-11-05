@@ -1,0 +1,56 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import "./facilidad.css"; // Importa el archivo de estilos
+
+const AulaFacilidad = () => {
+  
+  const [aula, setAula] = useState(0);
+  const [facilidad, setFacilidad] = useState(0);
+  useEffect(() => {
+    
+  }, []);
+
+  const unirAulaFacilidad = async (e) => {
+    e.preventDefault();
+    try {
+      const data ={
+        aula: aula,
+        facilidad: facilidad
+      }
+      const response = await axios.post("http://localhost:8000/api/facilidades/", data);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <div className="facilidad-container">
+      <form onSubmit={unirAulaFacilidad}>
+        <input 
+            placeholder="Ingrese idAula"
+            type="number"
+            value={aula || 0}
+            onChange={e=> setAula(e.target.value)}
+            id="aula"
+            name="aula"
+            required
+           />
+
+        <input 
+            placeholder="Ingrese idFacilidad"
+            type="number"
+            value={facilidad || 0}
+            onChange={e=> setFacilidad(e.target.value)}
+            id="facilidad"
+            name="facilidad"
+            required
+            />
+
+            <button type="submit">Vincular</button>
+        </form>
+    </div>
+  );
+};
+
+export default AulaFacilidad;
