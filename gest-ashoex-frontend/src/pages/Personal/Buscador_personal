@@ -1,0 +1,159 @@
+import React, { useState } from 'react';
+import Title from '../../components/typography/title';
+import InputField from '../../components/form/inputField';
+import SelectField from '../../components/form/selectField';
+import SaveButton from '../../components/buttons/saveButton';
+import CancelButton from '../../components/buttons/cancelButton';
+
+const RegistrarPersonal = () => {
+  const [formData, setFormData] = useState({
+    nombre: '',
+    correo: '',
+    telefono: '',
+    tipoPersonal: '', 
+  });
+
+  const [errors, setErrors] = useState({});
+  
+  // New state for search functionality
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  
+  // Simulated personnel data (in a real app, this would come from a backend)
+  const [personnelData, setPersonnelData] = useState([]);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+
+    if (value.trim() !== '') {
+      setErrors({ ...errors, [id]: '' });
+    }
+  };
+
+  const handleSave = () => {
+    const newErrors = {};
+
+    Object.keys(formData).forEach((key) => {
+      if (key !== 'tipoPersonal' && !formData[key].trim()) {
+        newErrors[key] = 'Campo obligatorio';
+      } else if (key === 'tipoPersonal' && formData[key] === '') {
+        newErrors[key] = 'Campo obligatorio';
+      }
+    });
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      // Save new personnel
+      const newPersonnel = { ...formData, id: Date.now() };
+      setPersonnelData([...personnelData, newPersonnel]);
+      
+      // Reset form
+      setFormData({
+        nombre: '',
+        correo: '',
+        telefono: '',
+        tipoPersonal: '',
+      });
+    }
+  };
+
+  const handleCancel = () => {
+    // Reset form
+    setFormData({
+      nombre: '',
+      correo: '',
+      telefono: '',
+      tipoPersonal: '',
+    });
+  };
+
+  const handleSearch = () => {
+    // Perform search across multiple fields
+    const results = personnelData.filter(personnel => 
+      Object.values(personnel).some(value => 
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setSearchResults(results);
+  };
+
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        {/* Registration Form Column */}
+        <div className="col-md-5">
+          <div className="card shadow-lg rounded-4 p-4">
+            <div className="mb-3">
+              <Title text="Registrar Personal Académico" />
+            </div>
+
+            <form className="d-flex flex-column gap-4" onSubmit={(e) => e.preventDefault()}>
+              {/* Existing form fields remain the same */}
+              {/* ... (previous InputField and SelectField components) ... */}
+
+              <div className="d-flex justify-content-between gap-2 mt-3">
+                <CancelButton onClick={handleCancel} />
+                <SaveButton onClick={handleSave} />
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Search Column */}
+        <div className="col-md-7">
+          <div className="card shadow-lg rounded-4 p-4">
+            <div className="mb-3">
+              <Title text="Buscar Personal" />
+            </div>
+
+            <div className="d-flex mb-3">
+              <InputField
+                placeholder="Buscar por nombre, correo, tipo de personal..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  container: { flex: 1 },
+                  input: { width: '100%' },
+                }}
+              />
+              <button 
+                className="btn btn-primary ms-2" 
+                onClick={handleSearch}
+              >
+                Buscar
+              </button>
+            </div>
+
+            {/* Search Results */}
+            <div className="search-results">
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Tipo de Personal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {searchResults.map((result) => (
+                    <tr key={result.id}>
+                      <td>{result.nombre}</td>
+                      <td>{result.correo}</td>
+                      <td>{result.telefono}</td>
+                      <td>{result.tipoPersonal}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RegistrarPersonal;
